@@ -1,36 +1,189 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ALODO Metric Backend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API Laravel du diagnostic ALODO Metric. Elle gere les questions, les diagnostics, les reponses, le scoring, les resultats, les statistiques publiques et le back-office admin.
 
-## About Laravel
+## Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Laravel 13
+- PHP 8.4 en production Docker Render
+- MySQL Aiven
+- Laravel Sanctum pour les tokens admin
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installation Locale
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
+php artisan serve
+```
 
-## Learning Laravel
+API locale:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```text
+http://localhost:8000/api/beta
+```
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Configuration `.env`
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Exemple local MySQL:
 
- vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```env
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000
+FRONTEND_URL=http://localhost:4200
 
-## License
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=metric
+DB_USERNAME=root
+DB_PASSWORD=
+MYSQL_ATTR_SSL_CA=
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Exemple Render + Aiven:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://alodo-metic.onrender.com
+FRONTEND_URL=https://alodo-metic.vercel.app
+
+DB_CONNECTION=mysql
+DB_HOST=your-aiven-host
+DB_PORT=12778
+DB_DATABASE=defaultdb
+DB_USERNAME=avnadmin
+DB_PASSWORD=your-aiven-password
+MYSQL_ATTR_SSL_CA=
+```
+
+Ne jamais commit le fichier `.env`.
+
+## Endpoints Publics
+
+Base URL:
+
+```text
+/api/beta
+```
+
+Routes:
+
+```text
+GET  /questions
+GET  /dimensions
+POST /diagnostics
+POST /diagnostics/{token}/answers
+POST /diagnostics/{token}/complete
+GET  /results/{token}
+GET  /stats/public
+```
+
+Parcours:
+
+1. Le frontend appelle `GET /questions`.
+2. Il cree une session avec `POST /diagnostics`.
+3. Chaque reponse est envoyee avec `POST /diagnostics/{token}/answers`.
+4. La fin du questionnaire appelle `POST /diagnostics/{token}/complete`.
+5. Le resultat est recupere avec `GET /results/{token}`.
+
+## Administration
+
+Routes admin:
+
+```text
+POST   /api/beta/admin/login
+GET    /api/beta/admin/me
+POST   /api/beta/admin/logout
+GET    /api/beta/admin/stats
+GET    /api/beta/admin/questions
+POST   /api/beta/admin/questions
+PUT    /api/beta/admin/questions/{question}
+DELETE /api/beta/admin/questions/{question}
+POST   /api/beta/admin/options
+PUT    /api/beta/admin/options/{option}
+```
+
+Les routes sauf `login` demandent:
+
+```http
+Authorization: Bearer {token}
+```
+
+Login:
+
+```bash
+curl -X POST https://alodo-metic.onrender.com/api/beta/admin/login \
+  -H "Content-Type: application/json" \
+  -d "{\"email\":\"admin@alodo.mpme\",\"password\":\"your-admin-password\"}"
+```
+
+Comptes seedes pour la beta:
+
+```text
+admin@alodo.mpme
+demo@alodo.mpme
+```
+
+Important: ces comptes sont des comptes beta/demo. Les mots de passe initiaux sont definis dans le seeder admin. Changer les mots de passe avant une utilisation en production reelle.
+
+## Seeders
+
+Les seeders creent:
+
+- 4 niveaux de maturite
+- 8 dimensions
+- 8 questions
+- 32 options
+- recommandations par dimension et niveau
+- comptes admin beta
+
+Commande:
+
+```bash
+php artisan db:seed
+```
+
+Les seeders utilisent `updateOrCreate`, donc ils peuvent etre relances sans dupliquer les donnees principales.
+
+## Deploiement Render
+
+Le deploiement passe par le `Dockerfile` a la racine du repo et le `render.yaml` racine.
+
+Le conteneur:
+
+- utilise PHP 8.4 Apache
+- installe les extensions PHP necessaires
+- lance `composer install --no-dev`
+- pointe Apache vers `public/`
+- lance `php artisan migrate --force`
+- lance `php artisan db:seed --force`
+
+Verifier apres deploiement:
+
+```bash
+curl https://alodo-metic.onrender.com/api/beta/stats/public
+curl https://alodo-metic.onrender.com/api/beta/questions
+```
+
+## CORS
+
+Les origines autorisees sont dans `config/cors.php`:
+
+```text
+env('FRONTEND_URL')
+https://alodo-metic.vercel.app
+http://localhost:4200
+http://127.0.0.1:4200
+```
+
+En production Render, definir:
+
+```env
+FRONTEND_URL=https://alodo-metic.vercel.app
+```

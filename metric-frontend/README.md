@@ -1,59 +1,150 @@
-# MetricFrontend
+# ALODO Metric Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+Application Angular du diagnostic ALODO Metric. Elle affiche la page publique, le questionnaire, la page de resultat et le back-office admin.
 
-## Development server
+## Stack
 
-To start a local development server, run:
+- Angular 22
+- Angular Router
+- HttpClient
+- Deploiement Vercel
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Installation Locale
 
 ```bash
-ng generate component component-name
+npm install
+npm run start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+URL locale:
+
+```text
+http://localhost:4200
+```
+
+Le frontend local appelle:
+
+```text
+http://127.0.0.1:8000/api/beta
+```
+
+## Build
 
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
+Dossier genere:
 
-To build the project run:
-
-```bash
-ng build
+```text
+dist/metric-frontend/browser
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Deploiement Vercel
 
-## Running unit tests
+Parametres Vercel:
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+```text
+Root Directory: metric-frontend
+Build Command: npm run build
+Output Directory: dist/metric-frontend/browser
 ```
 
-## Running end-to-end tests
+Le fichier `vercel.json` gere le fallback SPA:
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+```json
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Environnements
 
-## Additional Resources
+Production:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```text
+src/environments/environment.ts
+```
+
+URL API:
+
+```ts
+apiUrl: 'https://alodo-metic.onrender.com/api/beta'
+```
+
+Developpement:
+
+```text
+src/environments/environment.development.ts
+```
+
+URL API:
+
+```ts
+apiUrl: 'http://127.0.0.1:8000/api/beta'
+```
+
+## Routes
+
+```text
+/              Accueil
+/quiz          Questionnaire
+/result/:token Resultat d'un diagnostic
+/admin         Back-office
+```
+
+## Back-office Admin
+
+URL:
+
+```text
+https://alodo-metic.vercel.app/admin
+```
+
+Comptes beta seedes par le backend:
+
+```text
+admin@alodo.mpme
+demo@alodo.mpme
+```
+
+Les mots de passe initiaux sont definis cote backend dans le seeder admin et doivent etre changes avant une production reelle.
+
+Fonctionnalites:
+
+- connexion admin par token Sanctum
+- statistiques globales
+- statistiques par dimension
+- lecture et edition des questions
+- edition des scores d'options
+- suppression protegee des questions non utilisees
+
+Les tokens admin sont stockes dans `sessionStorage`.
+
+## Service API
+
+Le point central des appels HTTP est:
+
+```text
+src/app/services/api.service.ts
+```
+
+Principales methodes:
+
+```text
+getQuestions()
+getPublicStats()
+createDiagnostic()
+submitAnswer()
+completeDiagnostic()
+getResult()
+adminLogin()
+adminLogout()
+adminStats()
+adminQuestions()
+saveQuestion()
+deleteQuestion()
+saveOption()
+```
