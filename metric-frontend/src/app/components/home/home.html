@@ -27,23 +27,23 @@
 
     <div class="stats-row">
       <div class="stat">
-        <span class="stat-value">4 min</span>
+        <span class="stat-value" data-count="4" data-suffix=" min">4 min</span>
         <span class="stat-label">Pour faire le point</span>
       </div>
       <div class="stat">
-        <span class="stat-value">8</span>
+        <span class="stat-value" data-count="8">8</span>
         <span class="stat-label">Dimensions évaluées</span>
       </div>
       <div class="stat">
-        <span class="stat-value">100%</span>
+        <span class="stat-value" data-count="100" data-suffix="%">100%</span>
         <span class="stat-label">Gratuit et confidentiel</span>
       </div>
     </div>
 
-    <!-- Preuve sociale vivante : le compteur vient de TON backend -->
+    <!-- Preuve sociale vivante : le compteur vient de TON backend (animé au scroll) -->
     @if (diagnosticsCount() !== null) {
       <p class="social-proof">
-        Déjà utilisé par <strong>{{ diagnosticsCount() }}</strong> MPME
+        Déjà utilisé par <strong data-count="{{ diagnosticsCount() }}">{{ diagnosticsCount() }}</strong> MPME
         pour structurer leur gestion
       </p>
     }
