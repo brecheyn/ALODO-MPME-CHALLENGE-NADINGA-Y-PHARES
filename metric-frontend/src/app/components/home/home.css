@@ -4,22 +4,14 @@
   display: block;
 }
 
-/* ═══════════ HERO — fond image + voile sombre pour lisibilité ═══════════ */
-/* L'image (public/hero-bg.jpg) parle du contexte MPME ; le voile noir à 72%
-   garantit le contraste du texte blanc (accessibilité) et fait ressortir
-   le CTA orange (Von Restorff renforcé sur fond sombre). */
+/* ═══════════ HERO (version simple — fond sombre uni, sans image) ═══════════ */
 .hero {
-  padding: 7rem 0 6rem;
+  padding: 5rem 0 4rem;
   text-align: center;
-  position: relative;
-  background:
-    linear-gradient(rgba(17, 17, 17, 0.72), rgba(17, 17, 17, 0.72)),
-    url('/hero-bg.jpg') center / cover no-repeat;
-  color: var(--alodo-white);
+  color: var(--alodo-black);
 }
 
-.hero-title, .hero-subtitle, .hero-reassurance { color: var(--alodo-white); }
-.hero-subtitle, .hero-reassurance { color: #D8D8D3; }  /* gris clair lisible sur sombre */
+.hero-subtitle, .hero-reassurance { color: var(--alodo-gray); }
 
 .hero-inner {
   display: flex;
