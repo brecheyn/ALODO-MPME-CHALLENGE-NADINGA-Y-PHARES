@@ -118,7 +118,7 @@
   text-align: left;
 }
 
-/* Le numéro : noir massif, souligné d'orange (accent rare préservé) */
+/* Numéro d'étape souligné d'orange */
 .step-number {
   display: inline-block;
   font-size: 2rem;

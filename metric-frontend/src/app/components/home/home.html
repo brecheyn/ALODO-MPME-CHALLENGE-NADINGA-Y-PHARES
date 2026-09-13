@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <!-- Preuve sociale vivante : le compteur vient de TON backend (animé au scroll) -->
+    <!-- Preuve sociale : compteur chargé depuis l'API (animé au scroll) -->
     @if (diagnosticsCount() !== null) {
       <p class="social-proof">
         Déjà utilisé par <strong [attr.data-count]="diagnosticsCount()">{{ diagnosticsCount() }}</strong> MPME

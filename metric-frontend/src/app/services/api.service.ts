@@ -11,7 +11,7 @@ export interface AdminStats {
 }
 
 @Injectable({
-  providedIn: 'root'   // singleton : UNE seule instance partagée par toute l'app
+  providedIn: 'root'   // une seule instance partagée dans l'application
 })
 export class ApiService {
   // SEUL endroit de l'app où l'URL de l'API apparaît
@@ -23,7 +23,7 @@ export class ApiService {
   getQuestions(): Observable<Question[]> {
     return this.http.get<{ data: Question[] }>(`${this.apiUrl}/questions`)
       .pipe(
-        map(response => response.data)   // on DÉBALLL l'enveloppe "data" → le composant reçoit le tableau pur
+        map(response => response.data)   // extraction du tableau depuis l'enveloppe "data"
       );
   }
     getPublicStats(): Observable<number> {

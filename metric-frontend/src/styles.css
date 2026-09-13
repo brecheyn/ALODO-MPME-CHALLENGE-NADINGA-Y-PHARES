@@ -41,7 +41,7 @@ body {
   padding: 0 1.5rem;      /* respiration sur les bords (mobile) */
 }
 
-/* LE BOUTON — star de la page (Von Restorff) */
+/* Boutons principaux (Von Restorff) */
 .btn {
   display: inline-block;
   padding: 0.6rem 1.25rem;

@@ -80,7 +80,7 @@
 }
 
 .btn-next:disabled {
-  background: #D4D4D4;               /* grisé : empêche l'erreur sans message */
+  background: #D4D4D4;               /* état désactivé : réponse requise */
   cursor: not-allowed;
   box-shadow: none;
 }
