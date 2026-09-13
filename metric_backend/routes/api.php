@@ -48,6 +48,7 @@ Route::prefix('beta')->group(function () {
         Route::middleware('auth:sanctum')->group(function () {
             Route::get('me', [AdminController::class, 'me']);         // vérifier le token
             Route::post('logout', [AdminController::class, 'logout']); // révoquer le token
+            Route::get('stats', [AdminController::class, 'stats']);   // statistiques globales
             // Les routes CRUD questions/options/dimensions + stats arriveront ici
         });
     });
