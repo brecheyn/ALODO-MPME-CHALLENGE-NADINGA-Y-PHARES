@@ -1,0 +1,29 @@
+<!-- Navbar -->
+<header class="navbar">
+  <div class="container navbar-inner">
+
+    <!-- Élément 1 : le logo image (déposé dans public/ → servi à la racine) -->
+    <a class="logo" routerLink="/">
+      <img class="logo-img" src="logo-alodo-tech.svg" alt="ALODO Metric" />
+    </a>
+
+    <!-- Éléments 2 et 3 : UN lien info + UN CTA. Rien d'autre. -->
+    <nav class="navbar-actions">
+      <a class="nav-link" href="#" (click)="scrollToHow($event)">Comment ça marche</a>
+      <a class="btn btn-primary" routerLink="/quiz">Commencer</a>
+    </nav>
+
+  </div>
+</header>
+
+<main>
+  <router-outlet />
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p class="footer-brand">ALODO Metric <span class="logo-sep">·</span> Diagnostic</p>
+    <p class="footer-tagline">Un outil de structuration pour les MPME d'Afrique de l'Ouest.</p>
+    <p class="footer-copyright">© 2026 Brecheyn — Tous droits réservés</p>
+  </div>
+</footer>

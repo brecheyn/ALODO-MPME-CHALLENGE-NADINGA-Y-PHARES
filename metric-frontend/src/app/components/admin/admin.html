@@ -1,0 +1,102 @@
+<section class="admin page">
+  <div class="container admin-inner">
+
+    @if (!loggedIn()) {
+      <!-- ── LOGIN ── -->
+      <h1>Administration ALODO_Metric</h1>
+      <form class="login-form" (submit)="$event.preventDefault(); login()">
+        <input type="email" placeholder="Email" [value]="email()" (input)="email.set($any($event.target).value)" required />
+        <input type="password" placeholder="Mot de passe" [value]="password()" (input)="password.set($any($event.target).value)" required />
+        @if (loginError(); as err) { <p class="login-error">⚠️ {{ err }}</p> }
+        <button class="btn btn-primary" type="submit" [disabled]="loading()">
+          {{ loading() ? 'Connexion...' : 'Se connecter' }}
+        </button>
+      </form>
+    }
+
+    @if (loggedIn()) {
+      <!-- ── DASHBOARD STATS ── -->
+      <h1>Back-office</h1>
+
+      <!-- Onglets -->
+      <div class="tabs">
+        <button class="tab" [class.tab-active]="tab() === 'stats'" (click)="setTab('stats')">Statistiques</button>
+        <button class="tab" [class.tab-active]="tab() === 'questions'" (click)="setTab('questions')">Questions</button>
+      </div>
+
+      <!-- ── ONGLET QUESTIONS : édition inline (phase 4) ── -->
+      @if (tab() === 'questions') {
+        <div class="questions-list">
+          @for (q of questions(); track q.id) {
+            <div class="qcard">
+              <div class="qrow">
+                <input class="qtext" [value]="q.text" (input)="q.text = $any($event.target).value" />
+                <input class="qorder" type="number" [value]="q.display_order"
+                       (input)="q.display_order = +$any($event.target).value" />
+                <button class="btn btn-primary" (click)="saveQuestionText(q)">Enregistrer</button>
+                <button class="btn btn-ghost" (click)="removeQuestion(q)">Supprimer</button>
+              </div>
+              <div class="opts">
+                @for (opt of q.options; track opt.id) {
+                  <div class="optrow">
+                    <span>{{ opt.text }}</span>
+                    <span class="score-box">score
+                      <input class="qscore" type="number" min="0" max="3" [value]="opt.score"
+                             (input)="opt.score = +$any($event.target).value"
+                             (change)="saveOptionScore(opt)" />
+                    </span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      @if (tab() === 'stats') {
+      @if (stats(); as s) {
+        <div class="global-row">
+          <div class="global-card">
+            <span class="global-value">{{ s.global.diagnostics }}</span>
+            <span class="global-label">Diagnostics complétés</span>
+          </div>
+          <div class="global-card">
+            <span class="global-value">{{ s.global.avg_score }}</span>
+            <span class="global-label">Score moyen / 100</span>
+          </div>
+        </div>
+
+        <h2>Difficultés les plus rencontrées (% de MPME &lt; 50)</h2>
+        <div class="difficulties">
+          @for (d of s.top_difficulties; track d.label) {
+            <div class="diff">
+              <div class="diff-head">
+                <span>{{ d.label }}</span>
+                <strong>{{ d.weak_pct }}%</strong>
+              </div>
+              <div class="diff-bar"><div class="diff-fill" [style.width.%]="d.weak_pct"></div></div>
+            </div>
+          }
+        </div>
+
+        <h2>Détail par dimension</h2>
+        <table class="dims">
+          <tr><th>Dimension</th><th>Score moyen</th><th>% en difficulté</th></tr>
+          @for (d of s.dimensions; track d.code) {
+            <tr>
+              <td>{{ d.label }}</td>
+              <td>{{ d.avg_score }}/100</td>
+              <td [class.low]="d.weak_pct >= 50">{{ d.weak_pct }}%</td>
+            </tr>
+          }
+        </table>
+      } }
+
+      <div class="admin-actions">
+        <a class="btn btn-ghost" routerLink="/">← Retour au site</a>
+        <button class="btn btn-primary" (click)="logout()">Déconnexion</button>
+      </div>
+    }
+
+  </div>
+</section>

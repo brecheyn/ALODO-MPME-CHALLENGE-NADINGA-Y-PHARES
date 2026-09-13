@@ -1,0 +1,78 @@
+/* ═══════════ NAVBAR ═══════════ */
+.navbar {
+  background: var(--alodo-white);
+  border-bottom: 1px solid #E5E5E5;   /* séparation légère, pas un trait noir brutal */
+  position: sticky;                    /* reste visible quand on scrolle */
+  top: 0;
+  z-index: 10;                         /* au-dessus du reste */
+}
+
+/* Flexbox : le moteur de mise en page n°1 — à maîtriser ABSOLUMENT */
+.navbar-inner {
+  display: flex;                       /* les enfants s'alignent sur UNE ligne */
+  justify-content: space-between;      /* logo à gauche, actions à droite */
+  align-items: center;                 /* centrés verticalement */
+  height: 64px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;                          /* espace entre le carré et le texte */
+  text-decoration: none;
+  color: var(--alodo-black);
+}
+
+.logo-mark {
+  display: grid;
+  place-items: center;                  /* centre le "A" dans son carré */
+  width: 32px;
+  height: 32px;
+  background: var(--alodo-black);       /* carré noir = tampon, registre */
+  color: var(--alodo-white);
+  font-weight: 800;
+  border-radius: 4px;                   /* angles à peine arrondis : rigueur */
+}
+
+.logo-text {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.logo-sep { color: var(--alodo-orange); }  /* le "·" orange : signature discrète */
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.nav-link {
+  color: var(--alodo-gray);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+/* ═══════════ FOOTER — discret, en miroir de la navbar ═══════════ */
+.footer {
+  border-top: 1px solid #E5E5E5;        /* miroir du border-bottom de la navbar */
+  padding: 2rem 0;
+  margin-top: 3rem;                      /* respire avant de toucher le bas */
+  text-align: center;
+}
+
+.footer-brand {
+  font-weight: 700;
+}
+
+.footer-tagline {
+  color: var(--alodo-gray);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+.footer-copyright {
+  color: var(--alodo-gray);
+  font-size: 0.8rem;        /* encore plus discret que la tagline : hiérarchie en 3 niveaux */
+  margin-top: 0.75rem;
+  opacity: 0.85;             /* légèrement atténué : présent, mais pas en concurrence */
+}
