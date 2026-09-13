@@ -1,0 +1,147 @@
+/* You can add global styles to this file, and also import other style files */
+/* ═══════════════════════════════════════════════
+   ALODO MPME · Diagnostic — Palette globale
+   Noir & Blanc structurent, Orange fait agir.
+   ═══════════════════════════════════════════════ */
+
+:root {
+  /* Les variables CSS : définies UNE fois, utilisées partout */
+  --alodo-black:   #111111;   /* texte principal, navbar */
+  --alodo-white:   #FAFAF8;   /* fond (blanc cassé chaud) */
+  --alodo-orange:  #FF6B00;   /* CTA, actions — unique couleur saturée */
+  --alodo-orange-dark: #E05E00; /* état hover du CTA (légèrement plus sombre) */
+  --alodo-gray:    #6B7280;   /* textes secondaires */
+  --alodo-green:   #16A34A;   /* sémantique : point fort */
+  --alodo-brick:   #B42318;   /* sémantique : priorité / faiblesse */
+}
+
+/* Reset minimal : neutraliser les styles par défaut du navigateur */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;   /* padding compté DANS la largeur (prévisible) */
+}
+
+body {
+  background-color: var(--alodo-white);
+  color: var(--alodo-black);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+/* ═══════════ STYLES PARTAGÉS (global = utilisables par TOUS les composants) ═══════════
+   Règle : une classe utilisée par PLUSIEURS composants vit ici, pas dans app.css.
+   (Angular "scope" les styles d'un composant : .container défini dans app.css
+   ne s'appliquerait PAS au contenu de Home ou Quiz.) ═══════════ */
+
+/* La règle de lisibilité n°1 du web */
+.container {
+  max-width: 1100px;      /* au-delà, l'œil se perd sur les grands écrans */
+  margin: 0 auto;         /* centrage horizontal */
+  padding: 0 1.5rem;      /* respiration sur les bords (mobile) */
+}
+
+/* Boutons principaux (Von Restorff) */
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--alodo-orange);      /* le SEUL élément saturé visible */
+  color: #FFFFFF;
+  transition: background 0.15s ease;    /* transition douce au survol */
+}
+
+.btn-primary:hover {
+  background: var(--alodo-orange-dark); /* retour visuel : "tu peux cliquer" */
+}
+
+.btn-lg {
+  padding: 1rem 2.5rem;                 /* grand = Loi de Fitts (zone de pouce) */
+  font-size: 1.1rem;
+}
+
+/* ═══════════ ANIMATIONS SIMPLES ═══════════
+   Une seule animation : fade-up (apparaît en glissant vers le haut).
+   .page    → toute la page joue l'animation à son ouverture
+   .fade-up → un élément joue l'animation (cascade avec .delay-N) */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page    { animation: fade-up 0.35s ease-out both; }
+.fade-up { animation: fade-up 0.5s ease-out both; }
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+
+/* Accessibilité : ceux qui déclarent une sensibilité au mouvement n'ont rien */
+@media (prefers-reduced-motion: reduce) {
+  .page, .fade-up { animation: none; }
+}
+
+/* ═══════════ RESPONSIVE — Mobile (< 640px) ═══════════ */
+@media (max-width: 640px) {
+  /* Navbar : sur mobile on garde logo + CTA (le lien info disparaît → loi de Hick renforcée) */
+  .navbar-inner { height: auto; padding: 0.75rem 0; flex-wrap: wrap; gap: 0.5rem; }
+  .nav-link { display: none; }
+
+  /* CTA pleine largeur = dans la zone de pouce (Loi de Fitts) */
+  .btn-lg { width: 100%; text-align: center; }
+
+  /* Jauge un peu plus petite */
+  .score-ring    { width: 130px; height: 130px; }
+  .score-ring-inner { width: 100px; height: 100px; }
+  .score-number  { font-size: 2rem; }
+
+  /* Évite tout défilement horizontal accidentel */
+  body { overflow-x: hidden; }
+}
+
+/* ═══════════ RESPONSIVE — Très petits écrans (< 380px) ═══════════ */
+@media (max-width: 380px) {
+  .hero-title { font-size: 1.5rem; }
+  .container  { padding: 0 1rem; }
+}
+
+/* ═══════════ LOT C — MICRO-INTERACTIONS ═══════════ */
+/* Retour tactile : le bouton s'enfonce légèrement au clic (feedback, Fitts) */
+.btn:active { transform: scale(0.98); }
+
+/* ═══════════ LOT D — SKELETON LOADERS ═══════════ */
+/* Blocs gris pulsants affichés pendant les chargements */
+.skeleton {
+  background: linear-gradient(90deg, #ECECE8 25%, #F6F6F3 50%, #ECECE8 75%);
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.2s ease-in-out infinite;
+  border-radius: 8px;
+}
+@keyframes skeleton-pulse {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}
+
+
+/* ═══════════ RESPONSIVE — Tablette (641px à 1024px) ═══════════ */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hero-title { font-size: 2.2rem; }
+  .global-row .global-card { flex: 1 1 45%; }
+}
+
+/* ═══════════ RESPONSIVE — Admin (mobile) ═══════════ */
+@media (max-width: 640px) {
+  .dims th, .dims td { font-size: 0.85rem; padding: 0.35rem; }
+  .qtext { flex: 1 1 100%; }
+  .qrow .btn { flex: 1 1 45%; }
+}
+
