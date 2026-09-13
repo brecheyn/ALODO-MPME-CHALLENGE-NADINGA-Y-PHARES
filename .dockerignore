@@ -1,0 +1,14 @@
+.git
+.github
+.codex
+.cursor
+Alodo_metic
+metric-frontend/node_modules
+metric-frontend/dist
+metric-frontend/.angular
+metric_backend/.env
+metric_backend/.env.*
+!metric_backend/.env.example
+metric_backend/vendor
+metric_backend/node_modules
+metric_backend/storage/logs/*.log
