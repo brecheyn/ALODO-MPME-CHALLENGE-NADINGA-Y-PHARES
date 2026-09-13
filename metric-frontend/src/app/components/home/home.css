@@ -1,8 +1,25 @@
-/* ═══════════ HERO ═══════════ */
-.hero {
-  padding: 5rem 0 4rem;
-  text-align: center;                   /* centré = focus total sur UN message */
+.logo-img {
+  height: 40px;             /* logo ALODO TECH (image dans public/) */
+  width: auto;
+  display: block;
 }
+
+/* ═══════════ HERO — fond image + voile sombre pour lisibilité ═══════════ */
+/* L'image (public/hero-bg.jpg) parle du contexte MPME ; le voile noir à 72%
+   garantit le contraste du texte blanc (accessibilité) et fait ressortir
+   le CTA orange (Von Restorff renforcé sur fond sombre). */
+.hero {
+  padding: 7rem 0 6rem;
+  text-align: center;
+  position: relative;
+  background:
+    linear-gradient(rgba(17, 17, 17, 0.72), rgba(17, 17, 17, 0.72)),
+    url('/hero-bg.jpg') center / cover no-repeat;
+  color: var(--alodo-white);
+}
+
+.hero-title, .hero-subtitle, .hero-reassurance { color: var(--alodo-white); }
+.hero-subtitle, .hero-reassurance { color: #D8D8D3; }  /* gris clair lisible sur sombre */
 
 .hero-inner {
   display: flex;
