@@ -88,16 +88,16 @@ export class Result implements OnInit {
   // ── PARTAGE WHATSAPP ──
   // Texte adapté à la règle "sans humilier" : encourageant même avec un score bas.
   whatsappText(): string {
-    const score = this.score();
+    const score = this.result()?.global_score ?? 0;
     const url = `${window.location.origin}/result/${this.token()}`;
     if (score < 50) {
       // Règle : "Chaque grande entreprise a commencé ici" — jamais de score mis en avant
-      return `🧡 Je viens de faire le diagnostic ALODO Metric pour structurer ma MPME.`
-        + `\nMon premier levier de progrès est identifié — chaque grande entreprise a commencé ici !`
+      return 'Je viens de faire le diagnostic ALODO Metric pour structurer ma MPME.'
+        + '\nMon premier levier de progrès est identifié — chaque grande entreprise a commencé ici !'
         + `\nFais le tien aussi : ${url}`;
     }
-    return `📊 Je viens de faire le diagnostic ALODO Metric pour structurer ma MPME.`
-      + `\nMon score : ${score}/100 🎯`
+    return 'Je viens de faire le diagnostic ALODO Metric pour structurer ma MPME.'
+      + `\nMon score : ${score}/100`
       + `\nFais le tien aussi : ${url}`;
   }
 
@@ -109,7 +109,7 @@ export class Result implements OnInit {
   // Impression du résultat : le navigateur génère le PDF (Ctrl+P → "Enregistrer en PDF").
   // On ouvre une fenêtre d'impression contenant le résultat mis en page.
   exportPdf(): void {
-    const score = this.score();
+    const score = this.result()?.global_score ?? 0;
     const low = score < 50;   // règle "sans humilier" : mise en page encourageante
     const url = `${window.location.origin}/result/${this.token()}`;
 
@@ -134,7 +134,7 @@ export class Result implements OnInit {
         </head>
         <body>
           <div class="score-box">
-            <div class="score-value">${low ? '🧡' : '🎯'} ${score}/100</div>
+            <div class="score-value">${score}/100</div>
             <div class="score-label">
               ${low
                 ? 'Votre premier levier de progrès est identifié — chaque grande entreprise a commencé ici.'
