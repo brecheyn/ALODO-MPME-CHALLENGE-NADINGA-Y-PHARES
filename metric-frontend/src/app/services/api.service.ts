@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { Question } from '../models/questions.model';
 import { DiagnosticResult } from '../models/result.model';
 
@@ -14,7 +15,7 @@ export interface AdminStats {
   providedIn: 'root'
 })
 export class ApiService {
-  private readonly apiUrl = 'http://127.0.0.1:8000/api/beta';
+  private readonly apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
