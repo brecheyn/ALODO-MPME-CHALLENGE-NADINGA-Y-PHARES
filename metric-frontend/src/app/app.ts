@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,19 @@ import { RouterOutlet, RouterLink } from '@angular/router';
   styleUrl: './app.css',
 })
 export class App {
-  // Le shell ne porte AUCUNE donnée : il structure (navbar / contenu / footer).
-  // Les données vivent dans les composants de page (Home, Quiz...).
+  constructor(private router: Router) {}
+
+  // Défilement vers "Comment ça marche" SANS modifier l'URL (pas de #fragment).
+  // Si on n'est pas sur l'accueil (la section n'existe pas encore), on y navigue d'abord.
+  scrollToHow(event: Event): void {
+    event.preventDefault();   // empêche le comportement du href="#"
+    const section = document.getElementById('how-it-works');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      this.router.navigate(['/']).then(() =>
+        document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })
+      );
+    }
+  }
 }
