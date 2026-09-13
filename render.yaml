@@ -3,8 +3,8 @@ services:
     name: alodo-api
     runtime: docker
     plan: free
-    rootDir: metric_backend
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: metric_backend/Dockerfile
+    dockerContext: metric_backend
     envVars:
       - key: APP_NAME
         value: Alodo Metric
