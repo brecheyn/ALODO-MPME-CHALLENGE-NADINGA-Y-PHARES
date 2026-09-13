@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: alodo-api
+    runtime: php
+    plan: free
+    buildCommand: composer install --no-dev --optimize-autoloader && php artisan migrate --force
+    startCommand: php artisan config:clear && php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY            # générer : php artisan key:generate --show
+        sync: false
+      - key: APP_URL            # ex: https://alodo-api.onrender.com
+        sync: false
+      - key: FRONTEND_URL       # ex: https://alodo-metric.vercel.app
+        sync: false
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST            # hôte de la BDD externe (Aiven / TiDB)
+        sync: false
+      - key: DB_PORT
+        value: 3306
+      - key: DB_DATABASE
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: MYSQL_ATTR_SSL_CA  # certificat CA si la BDD exige SSL
+        sync: false

@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\beta\DiagnosticController;
 use App\Http\Controllers\Api\beta\AnswerController;
 use App\Http\Controllers\Api\beta\ResultController;
 use App\Http\Controllers\Api\beta\StatController;
+use App\Http\Controllers\Api\beta\AdminController;
+use App\Http\Controllers\Api\beta\AdminQuestionController;
 
 
 Route::get('/user', function (Request $request) {
@@ -40,6 +42,25 @@ Route::prefix('beta')->group(function () {
 
     // Preuve sociale : "Déjà utilisé par X MPME"
     Route::get('stats/public', [StatController::class, 'publicStats']);
+
+    // ─────────── BACK-OFFICE ADMIN (protégé par token Sanctum) ───────────
+    Route::prefix('admin')->group(function () {
+        Route::post('login', [AdminController::class, 'login']);  // public : obtenir un token
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::get('me', [AdminController::class, 'me']);         // vérifier le token
+            Route::post('logout', [AdminController::class, 'logout']); // révoquer le token
+            Route::get('stats', [AdminController::class, 'stats']);   // statistiques globales
+
+            // ── CRUD questions / options (phase 4) ──
+            Route::get('questions', [AdminQuestionController::class, 'index']);
+            Route::post('questions', [AdminQuestionController::class, 'store']);
+            Route::put('questions/{question}', [AdminQuestionController::class, 'update']);
+            Route::delete('questions/{question}', [AdminQuestionController::class, 'destroy']);
+            Route::put('options/{option}', [AdminQuestionController::class, 'updateOption']);
+            Route::post('options', [AdminQuestionController::class, 'storeOption']);
+            // Les routes CRUD questions/options/dimensions + stats arriveront ici
+        });
+    });
 });
 
 
