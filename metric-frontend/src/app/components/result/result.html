@@ -85,11 +85,17 @@
         </div>
       }
 
-      <!-- CTA de sortie : partager + recommencer -->
-      <div class="result-actions">
-        <button type="button" class="btn btn-primary btn-lg" (click)="share()">
-          {{ copied() ? 'Lien copié ✅' : 'Partager mon résultat' }}
+      <!-- ── PARTAGE : WhatsApp + PDF + lien copiable (règle "sans humilier" intégrée aux 3) ── -->
+      <div class="share-row">
+        <button class="btn btn-whatsapp" (click)="shareWhatsapp()">📱 Partager sur WhatsApp</button>
+        <button class="btn btn-pdf" (click)="exportPdf()">📄 Exporter en PDF</button>
+        <button class="btn btn-ghost" (click)="share()">
+          {{ copied() ? '✅ Lien copié !' : '🔗 Copier le lien' }}
         </button>
+      </div>
+
+      <!-- CTA de sortie : recommencer -->
+      <div class="result-actions">
         <a class="btn btn-ghost" routerLink="/quiz">Recommencer</a>
       </div>
 

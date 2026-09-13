@@ -84,4 +84,74 @@ export class Result implements OnInit {
       setTimeout(() => this.copied.set(false), 2000);
     });
   }
+
+  // ── PARTAGE WHATSAPP ──
+  // Texte adapté à la règle "sans humilier" : encourageant même avec un score bas.
+  whatsappText(): string {
+    const score = this.score();
+    const url = `${window.location.origin}/result/${this.token()}`;
+    if (score < 50) {
+      // Règle : "Chaque grande entreprise a commencé ici" — jamais de score mis en avant
+      return `🧡 Je viens de faire le diagnostic ALODO Metric pour structurer ma MPME.`
+        + `\nMon premier levier de progrès est identifié — chaque grande entreprise a commencé ici !`
+        + `\nFais le tien aussi : ${url}`;
+    }
+    return `📊 Je viens de faire le diagnostic ALODO Metric pour structurer ma MPME.`
+      + `\nMon score : ${score}/100 🎯`
+      + `\nFais le tien aussi : ${url}`;
+  }
+
+  shareWhatsapp(): void {
+    window.open(`https://wa.me/?text=${encodeURIComponent(this.whatsappText())}`, '_blank');
+  }
+
+  // ── EXPORT PDF ──
+  // Impression du résultat : le navigateur génère le PDF (Ctrl+P → "Enregistrer en PDF").
+  // On ouvre une fenêtre d'impression contenant le résultat mis en page.
+  exportPdf(): void {
+    const score = this.score();
+    const low = score < 50;   // règle "sans humilier" : mise en page encourageante
+    const url = `${window.location.origin}/result/${this.token()}`;
+
+    const recos = document.querySelectorAll<HTMLElement>('.reco-item');
+    const recosHtml = Array.from(recos).map(r =>
+      `<li style="margin-bottom:8px">${r.textContent?.trim()}</li>`).join('');
+
+    const w = window.open('', '_blank', 'width=800,height=900');
+    if (!w) return;
+    w.document.write(`
+      <html>
+        <head>
+          <title>Résultat ALODO Metric</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 40px; color: #1A1A1A; }
+            .score-box { text-align: center; margin-bottom: 32px; }
+            .score-value { font-size: 64px; font-weight: 800; color: ${low ? '#E08A2E' : '#2E8A4E'}; }
+            .score-label { color: #6A6A6A; margin-top: 8px; }
+            h2 { font-size: 18px; border-bottom: 2px solid #E5E5E5; padding-bottom: 8px; }
+            .encourage { background: #FDF4E7; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+          </style>
+        </head>
+        <body>
+          <div class="score-box">
+            <div class="score-value">${low ? '🧡' : '🎯'} ${score}/100</div>
+            <div class="score-label">
+              ${low
+                ? 'Votre premier levier de progrès est identifié — chaque grande entreprise a commencé ici.'
+                : 'Score de structuration — continuez sur cette lancée !'}
+            </div>
+          </div>
+          ${low ? `<div class="encourage"><strong>Commencez par cette action :</strong><ul>${recosHtml}</ul></div>` : ''}
+          <h2>Vos recommandations</h2>
+          <ul>${recosHtml}</ul>
+          <p style="color:#9A9A9A; font-size:12px; margin-top:32px">
+            Généré par ALODO Metric — ${new Date().toLocaleDateString('fr-FR')}<br>
+            Refaire le diagnostic : ${url}
+          </p>
+        </body>
+      </html>
+    `);
+    w.document.close();
+    setTimeout(() => w.print(), 300);   // laisse le rendu se charger avant l'impression
+  }
 }

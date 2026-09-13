@@ -115,7 +115,14 @@
 .rec-title  { font-weight: 700; }
 .rec-action { color: var(--alodo-gray); font-size: 0.95rem; }
 
-/* ── CTA de sortie ── */
+/* ── Partage (WhatsApp + PDF + lien copiable) ── */
+.share-row {
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+}
+.btn-whatsapp { background: #25D366; color: #FFF; font-weight: 600; }
+.btn-whatsapp:active { transform: scale(0.98); }
+.btn-pdf { background: #E5E5E5; color: #1A1A1A; font-weight: 600; }
+.btn-pdf:active { transform: scale(0.98); }
 .result-actions {
   display: flex;
   gap: 1rem;
