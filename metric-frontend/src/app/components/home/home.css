@@ -71,3 +71,55 @@
 .social-proof strong {
   color: var(--alodo-black);       /* seul le chiffre ressort, en noir gras */
 }
+
+/* ═══════════ COMMENT ÇA MARCHE — 3 étapes ═══════════ */
+.how {
+  padding: 4rem 0;
+  border-top: 1px solid #E5E5E5;   /* séparation douce après les stats */
+}
+
+.how .container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  text-align: center;
+}
+
+.how-title { font-size: 1.8rem; font-weight: 800; }
+
+.how-subtitle {
+  color: var(--alodo-gray);
+  max-width: 560px;
+}
+
+/* Grille responsive : 3 colonnes sur desktop, 1 colonne sur mobile */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.step {
+  border: 1px solid #E5E5E5;
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  background: #FFFFFF;
+  text-align: left;
+}
+
+/* Le numéro : noir massif, souligné d'orange (accent rare préservé) */
+.step-number {
+  display: inline-block;
+  font-size: 2rem;
+  font-weight: 800;
+  border-bottom: 3px solid var(--alodo-orange);
+  padding-bottom: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.step-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.step-text  { color: var(--alodo-gray); font-size: 0.95rem; }
+
+.how-cta { margin-top: 0.5rem; }

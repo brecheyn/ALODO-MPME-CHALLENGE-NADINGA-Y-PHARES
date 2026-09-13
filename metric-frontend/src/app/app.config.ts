@@ -9,7 +9,10 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     // scrollPositionRestoration: 'top' → chaque navigation arrive en HAUT de page
     // (sans ça, on arrive au milieu du quiz si on avait scrollé l'accueil)
-    provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
+    provideRouter(routes, withInMemoryScrolling({
+      scrollPositionRestoration: 'top',
+      anchorScrolling: 'enabled',   // défilement fluide vers les ancres (#how-it-works)
+    })),
     provideHttpClient(),
   ],
 };
