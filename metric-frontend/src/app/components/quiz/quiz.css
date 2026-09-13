@@ -66,16 +66,21 @@
   font-weight: 600;
 }
 
-/* ── Le bouton Suivant : fixé en bas, toujours au même endroit ── */
+/* ── Le bouton Suivant : reste visible en bas de l'écran (sticky) ──
+   sticky (et pas fixed) : le bouton reste collé au bas du viewport PENDANT
+   le scroll du questionnaire, mais ne peut jamais sortir de sa section
+   → il ne chevauche plus jamais le footer. */
 .btn-next {
-  position: fixed;                   /* fixe au viewport = mémoire musculaire */
+  position: sticky;                  /* collé au bas pendant le scroll du quiz */
   bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
+  align-self: center;                /* centré dans la colonne flex du quiz */
   width: min(480px, calc(100% - 3rem));  /* ne dépasse jamais l'écran mobile */
+  z-index: 5;                        /* au-dessus des options au moment du scroll */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);  /* le détache visuellement du fond */
 }
 
 .btn-next:disabled {
   background: #D4D4D4;               /* grisé : empêche l'erreur sans message */
   cursor: not-allowed;
+  box-shadow: none;
 }
