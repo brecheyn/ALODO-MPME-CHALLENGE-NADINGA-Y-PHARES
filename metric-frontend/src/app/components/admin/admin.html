@@ -16,8 +16,44 @@
 
     @if (loggedIn()) {
       <!-- ── DASHBOARD STATS ── -->
-      <h1>Statistiques</h1>
+      <h1>Back-office</h1>
 
+      <!-- Onglets -->
+      <div class="tabs">
+        <button class="tab" [class.tab-active]="tab() === 'stats'" (click)="setTab('stats')">Statistiques</button>
+        <button class="tab" [class.tab-active]="tab() === 'questions'" (click)="setTab('questions')">Questions</button>
+      </div>
+
+      <!-- ── ONGLET QUESTIONS : édition inline (phase 4) ── -->
+      @if (tab() === 'questions') {
+        <div class="questions-list">
+          @for (q of questions(); track q.id) {
+            <div class="qcard">
+              <div class="qrow">
+                <input class="qtext" [value]="q.text" (input)="q.text = $any($event.target).value" />
+                <input class="qorder" type="number" [value]="q.display_order"
+                       (input)="q.display_order = +$any($event.target).value" />
+                <button class="btn btn-primary" (click)="saveQuestionText(q)">Enregistrer</button>
+                <button class="btn btn-ghost" (click)="removeQuestion(q)">Supprimer</button>
+              </div>
+              <div class="opts">
+                @for (opt of q.options; track opt.id) {
+                  <div class="optrow">
+                    <span>{{ opt.text }}</span>
+                    <span class="score-box">score
+                      <input class="qscore" type="number" min="0" max="3" [value]="opt.score"
+                             (input)="opt.score = +$any($event.target).value"
+                             (change)="saveOptionScore(opt)" />
+                    </span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      @if (tab() === 'stats') {
       @if (stats(); as s) {
         <div class="global-row">
           <div class="global-card">
@@ -54,7 +90,7 @@
             </tr>
           }
         </table>
-      }
+      } }
 
       <div class="admin-actions">
         <a class="btn btn-ghost" routerLink="/">← Retour au site</a>

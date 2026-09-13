@@ -84,4 +84,24 @@ export class ApiService {
       headers: { Authorization: `Bearer ${this.adminToken()}` },
     }).pipe(map(r => r.data));
   }
+
+  // ── CRUD questions (phase 4) ──
+  private auth() { return { Authorization: `Bearer ${this.adminToken()}` }; }
+
+  adminQuestions(): Observable<unknown> {
+    return this.http.get<{ data: unknown }>(`${this.apiUrl}/admin/questions`, { headers: this.auth() })
+      .pipe(map(r => r.data));
+  }
+
+  saveQuestion(id: number, changes: Record<string, unknown>): Observable<unknown> {
+    return this.http.put(`${this.apiUrl}/admin/questions/${id}`, changes, { headers: this.auth() });
+  }
+
+  deleteQuestion(id: number): Observable<unknown> {
+    return this.http.delete(`${this.apiUrl}/admin/questions/${id}`, { headers: this.auth() });
+  }
+
+  saveOption(id: number, changes: Record<string, unknown>): Observable<unknown> {
+    return this.http.put(`${this.apiUrl}/admin/options/${id}`, changes, { headers: this.auth() });
+  }
 }
