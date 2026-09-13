@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\beta\DiagnosticController;
 use App\Http\Controllers\Api\beta\AnswerController;
 use App\Http\Controllers\Api\beta\ResultController;
 use App\Http\Controllers\Api\beta\StatController;
+use App\Http\Controllers\Api\beta\AdminController;
 
 
 Route::get('/user', function (Request $request) {
@@ -40,6 +41,16 @@ Route::prefix('beta')->group(function () {
 
     // Preuve sociale : "Déjà utilisé par X MPME"
     Route::get('stats/public', [StatController::class, 'publicStats']);
+
+    // ─────────── BACK-OFFICE ADMIN (protégé par token Sanctum) ───────────
+    Route::prefix('admin')->group(function () {
+        Route::post('login', [AdminController::class, 'login']);  // public : obtenir un token
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::get('me', [AdminController::class, 'me']);         // vérifier le token
+            Route::post('logout', [AdminController::class, 'logout']); // révoquer le token
+            // Les routes CRUD questions/options/dimensions + stats arriveront ici
+        });
+    });
 });
 
 
