@@ -66,3 +66,23 @@ body {
   padding: 1rem 2.5rem;                 /* grand = Loi de Fitts (zone de pouce) */
   font-size: 1.1rem;
 }
+
+/* ═══════════ ANIMATIONS SIMPLES ═══════════
+   Une seule animation : fade-up (apparaît en glissant vers le haut).
+   .page    → toute la page joue l'animation à son ouverture
+   .fade-up → un élément joue l'animation (cascade avec .delay-N) */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page    { animation: fade-up 0.35s ease-out both; }
+.fade-up { animation: fade-up 0.5s ease-out both; }
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+
+/* Accessibilité : ceux qui déclarent une sensibilité au mouvement n'ont rien */
+@media (prefers-reduced-motion: reduce) {
+  .page, .fade-up { animation: none; }
+}
