@@ -86,3 +86,27 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .page, .fade-up { animation: none; }
 }
+
+/* ═══════════ RESPONSIVE — Mobile (< 640px) ═══════════ */
+@media (max-width: 640px) {
+  /* Navbar : sur mobile on garde logo + CTA (le lien info disparaît → loi de Hick renforcée) */
+  .navbar-inner { height: auto; padding: 0.75rem 0; flex-wrap: wrap; gap: 0.5rem; }
+  .nav-link { display: none; }
+
+  /* CTA pleine largeur = dans la zone de pouce (Loi de Fitts) */
+  .btn-lg { width: 100%; text-align: center; }
+
+  /* Jauge un peu plus petite */
+  .score-ring    { width: 130px; height: 130px; }
+  .score-ring-inner { width: 100px; height: 100px; }
+  .score-number  { font-size: 2rem; }
+
+  /* Évite tout défilement horizontal accidentel */
+  body { overflow-x: hidden; }
+}
+
+/* ═══════════ RESPONSIVE — Très petits écrans (< 380px) ═══════════ */
+@media (max-width: 380px) {
+  .hero-title { font-size: 1.5rem; }
+  .container  { padding: 0 1rem; }
+}
