@@ -19,12 +19,13 @@ return [
 
     'allowed_methods' => ['*'],
 
-    // Bonne pratique : on liste EXPLICITEMENT les origines autorisées.
-    // '*' (tout le monde) est pratique en dev mais interdit en production !
-    'allowed_origins' => [
-        'http://localhost:4200',   // Angular en développement
-        'http://127.0.0.1:4200',   // variante IP locale
-    ],
+    // Origines autorisées : configurables via la variable FRONTEND_URL (Render).
+    // En local, localhost:4200 (Angular dev).
+    'allowed_origins' => array_filter([
+        env('FRONTEND_URL'),          // ex: https://alodo-metric.vercel.app en production
+        'http://localhost:4200',      // dev local
+        'http://127.0.0.1:4200',
+    ]),
 
     'allowed_origins_patterns' => [],
 
