@@ -14,6 +14,7 @@ return [
 
     'allowed_origins' => array_filter([
         env('FRONTEND_URL'),
+        'https://alodo-metic.vercel.app',
         'http://localhost:4200',
         'http://127.0.0.1:4200',
     ]),

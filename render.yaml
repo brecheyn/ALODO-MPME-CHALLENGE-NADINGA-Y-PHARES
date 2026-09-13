@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: alodo-api
+    name: alodo-metic
     runtime: docker
     plan: free
     dockerfilePath: ./Dockerfile
