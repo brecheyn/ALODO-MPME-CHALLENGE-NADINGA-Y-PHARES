@@ -78,18 +78,9 @@ Le fichier `metric_backend/.env` reste local et ne doit jamais etre commit. Les 
 Variables backend principales:
 
 ```env
-APP_ENV=production
-APP_DEBUG=false
 APP_URL=https://alodo-metic.onrender.com
 FRONTEND_URL=https://alodo-metic.vercel.app
 
-DB_CONNECTION=mysql
-DB_HOST=...
-DB_PORT=12778
-DB_DATABASE=defaultdb
-DB_USERNAME=avnadmin
-DB_PASSWORD=...
-MYSQL_ATTR_SSL_CA=
 ```
 
 ## Deploiement
