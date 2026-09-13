@@ -9,10 +9,10 @@
 
     @if (result(); as r) {
 
-      <!-- Jauge circulaire : le score global mis en scène (orange = valeur/récompense) -->
+      <!-- Jauge animée : le chiffre compte 0 → score pendant que l'anneau se remplit -->
       <div class="score-ring" [style.background]="ringGradient()">
         <div class="score-ring-inner">
-          <span class="score-number">{{ r.global_score }}</span>
+          <span class="score-number">{{ displayedScore() }}</span>
           <span class="score-max">/ 100</span>
         </div>
       </div>
@@ -21,33 +21,52 @@
       <h1 class="result-level">Niveau {{ r.level.number }} · {{ r.level.label }}</h1>
       <p class="result-encouragement">{{ r.level.encouragement }}</p>
 
-      <!-- Point fort (VERT) vs Priorité (ROUGE-BRIQUE) : jamais par le texte seul -->
+      <!-- Point fort (VERT) vs Priorité — pour un score bas : reformulé en levier, pas en échec -->
       <div class="verdict-row">
         <div class="verdict verdict-strength">
           <span class="verdict-label">Point fort · à préserver</span>
           <span class="verdict-value">{{ r.strength.label }}</span>
         </div>
         <div class="verdict verdict-priority">
-          <span class="verdict-label">Priorité · à structurer</span>
+          <span class="verdict-label">
+            {{ isLow() ? 'Votre premier levier de progrès' : 'Priorité · à structurer' }}
+          </span>
           <span class="verdict-value">{{ r.priority.label }}</span>
         </div>
       </div>
 
-      <!-- Scores par dimension -->
+      <!-- Pour un score bas : l'action concrète remonte AVANT les barres.
+           Le dirigeant repart avec quelque chose à FAIRE, pas une note. -->
+      @if (isLow() && r.recommendations.length > 0) {
+        <div class="recommendations">
+          <h2 class="section-title">Commencez par cette action</h2>
+          @for (rec of r.recommendations; track rec.title) {
+            <div class="recommendation">
+              <span class="rec-title">{{ rec.title }}</span>
+              <span class="rec-action">{{ rec.action_text }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Scores par dimension : barres animées en cascade.
+           Score < 50 : barre NEUTRE (gris) + chiffre brique discret → signal sans sanction. -->
       <div class="dimensions">
         <h2 class="section-title">Vos dimensions</h2>
-        @for (dim of dimensionEntries(); track dim.code) {
+        @for (dim of dimensionEntries(); track dim.code; let i = $index) {
           <div class="dimension">
             <div class="dimension-head">
               <span class="dimension-label">{{ dim.label }}</span>
               <span class="dimension-score"
                     [class.score-good]="dim.score >= 50"
-                    [class.score-low]="dim.score < 50">{{ dim.score }}%</span>
+                    [class.score-low]="dim.score < 50 && !isLow()">{{ dim.score }}%</span>
             </div>
             <div class="dimension-bar">
-              <div class="dimension-fill" [style.width.%]="dim.score"
+              <div class="dimension-fill"
+                   [style.width.%]="i < barsShown() ? dim.score : 0"
                    [class.fill-good]="dim.score >= 50"
-                   [class.fill-low]="dim.score < 50"></div>
+                   [class.fill-low]="dim.score < 50 && !isLow()"
+                   [class.fill-neutral]="dim.score < 50 && isLow()"></div>
             </div>
           </div>
         }
