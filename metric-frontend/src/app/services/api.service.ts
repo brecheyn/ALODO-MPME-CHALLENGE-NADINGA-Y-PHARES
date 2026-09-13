@@ -11,34 +11,28 @@ export interface AdminStats {
 }
 
 @Injectable({
-  providedIn: 'root'   // une seule instance partagée dans l'application
+  providedIn: 'root'
 })
 export class ApiService {
-  // SEUL endroit de l'app où l'URL de l'API apparaît
   private readonly apiUrl = 'http://127.0.0.1:8000/api/beta';
 
-  // Angular INJECTE le client HTTP grâce à provideHttpClient()
   constructor(private http: HttpClient) {}
 
   getQuestions(): Observable<Question[]> {
     return this.http.get<{ data: Question[] }>(`${this.apiUrl}/questions`)
-      .pipe(
-        map(response => response.data)   // extraction du tableau depuis l'enveloppe "data"
-      );
+      .pipe(map(response => response.data));
   }
-    getPublicStats(): Observable<number> {
+
+  getPublicStats(): Observable<number> {
     return this.http.get<{ data: { diagnostics_completed: number } }>(`${this.apiUrl}/stats/public`)
-      .pipe(
-        map(response => response.data.diagnostics_completed)  // on ne garde que le chiffre
-      );
+      .pipe(map(response => response.data.diagnostics_completed));
   }
-   // "Commencer le diagnostic" → crée la session, renvoie le token
+
   createDiagnostic(): Observable<string> {
     return this.http.post<{ data: { token: string } }>(`${this.apiUrl}/diagnostics`, {})
       .pipe(map(response => response.data.token));
   }
 
-  // Bouton "Suivant" → enregistre la réponse choisie
   submitAnswer(token: string, questionId: number, optionId: number): Observable<unknown> {
     return this.http.post(`${this.apiUrl}/diagnostics/${token}/answers`, {
       question_id: questionId,
@@ -46,19 +40,16 @@ export class ApiService {
     });
   }
 
-  // Bouton "Voir mon résultat" → déclenche le moteur de scoring côté backend
   completeDiagnostic(token: string): Observable<unknown> {
     return this.http.post(`${this.apiUrl}/diagnostics/${token}/complete`, {});
   }
 
-  // Écran de résultat : score, niveau, force/priorité + recommandations
   getResult(token: string): Observable<DiagnosticResult> {
     return this.http.get<{ data: DiagnosticResult }>(`${this.apiUrl}/results/${token}`)
       .pipe(map(response => response.data));
   }
 
-  // ─── BACK-OFFICE ADMIN ───
-  // Le token admin vit dans sessionStorage : survit au refresh, meurt à la fermeture
+// ─── Back-office admin ───
   adminToken(): string | null { return sessionStorage.getItem('admin_token'); }
 
   adminLogin(email: string, password: string): Observable<{ name: string }> {
@@ -85,9 +76,6 @@ export class ApiService {
     }).pipe(map(r => r.data));
   }
 
-  // ── CRUD questions (phase 4) ──
-  private auth() { return { Authorization: `Bearer ${this.adminToken()}` }; }
-
   adminQuestions(): Observable<unknown> {
     return this.http.get<{ data: unknown }>(`${this.apiUrl}/admin/questions`, { headers: this.auth() })
       .pipe(map(r => r.data));
@@ -104,4 +92,6 @@ export class ApiService {
   saveOption(id: number, changes: Record<string, unknown>): Observable<unknown> {
     return this.http.put(`${this.apiUrl}/admin/options/${id}`, changes, { headers: this.auth() });
   }
+
+  private auth() { return { Authorization: `Bearer ${this.adminToken()}` }; }
 }
