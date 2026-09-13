@@ -4,6 +4,12 @@ import { Observable, map } from 'rxjs';
 import { Question } from '../models/questions.model';
 import { DiagnosticResult } from '../models/result.model';
 
+export interface AdminStats {
+  global: { diagnostics: number; avg_score: number; levels: Record<string, number> };
+  dimensions: { code: string; label: string; avg_score: number; weak_pct: number }[];
+  top_difficulties: { label: string; weak_pct: number }[];
+}
+
 @Injectable({
   providedIn: 'root'   // singleton : UNE seule instance partagée par toute l'app
 })
@@ -49,5 +55,33 @@ export class ApiService {
   getResult(token: string): Observable<DiagnosticResult> {
     return this.http.get<{ data: DiagnosticResult }>(`${this.apiUrl}/results/${token}`)
       .pipe(map(response => response.data));
+  }
+
+  // ─── BACK-OFFICE ADMIN ───
+  // Le token admin vit dans sessionStorage : survit au refresh, meurt à la fermeture
+  adminToken(): string | null { return sessionStorage.getItem('admin_token'); }
+
+  adminLogin(email: string, password: string): Observable<{ name: string }> {
+    return this.http.post<{ data: { token: string; admin: { name: string } } }>(
+      `${this.apiUrl}/admin/login`, { email, password }
+    ).pipe(map(r => {
+      sessionStorage.setItem('admin_token', r.data.token);
+      return r.data.admin;
+    }));
+  }
+
+  adminLogout(): void {
+    const token = this.adminToken();
+    if (token) {
+      this.http.post(`${this.apiUrl}/admin/logout`, {}, { headers: { Authorization: `Bearer ${token}` } })
+        .subscribe({ complete: () => sessionStorage.removeItem('admin_token') });
+    }
+    sessionStorage.removeItem('admin_token');
+  }
+
+  adminStats(): Observable<AdminStats> {
+    return this.http.get<{ data: AdminStats }>(`${this.apiUrl}/admin/stats`, {
+      headers: { Authorization: `Bearer ${this.adminToken()}` },
+    }).pipe(map(r => r.data));
   }
 }

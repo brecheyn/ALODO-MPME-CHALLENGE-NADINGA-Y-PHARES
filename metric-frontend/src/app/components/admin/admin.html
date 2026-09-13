@@ -1,0 +1,66 @@
+<section class="admin page">
+  <div class="container admin-inner">
+
+    @if (!loggedIn()) {
+      <!-- ── LOGIN ── -->
+      <h1>Back-office ALODO</h1>
+      <form class="login-form" (submit)="$event.preventDefault(); login()">
+        <input type="email" placeholder="Email" [value]="email()" (input)="email.set($any($event.target).value)" required />
+        <input type="password" placeholder="Mot de passe" [value]="password()" (input)="password.set($any($event.target).value)" required />
+        @if (loginError(); as err) { <p class="login-error">⚠️ {{ err }}</p> }
+        <button class="btn btn-primary" type="submit" [disabled]="loading()">
+          {{ loading() ? 'Connexion...' : 'Se connecter' }}
+        </button>
+      </form>
+    }
+
+    @if (loggedIn()) {
+      <!-- ── DASHBOARD STATS ── -->
+      <h1>Statistiques</h1>
+
+      @if (stats(); as s) {
+        <div class="global-row">
+          <div class="global-card">
+            <span class="global-value">{{ s.global.diagnostics }}</span>
+            <span class="global-label">Diagnostics complétés</span>
+          </div>
+          <div class="global-card">
+            <span class="global-value">{{ s.global.avg_score }}</span>
+            <span class="global-label">Score moyen / 100</span>
+          </div>
+        </div>
+
+        <h2>Difficultés les plus rencontrées (% de MPME &lt; 50)</h2>
+        <div class="difficulties">
+          @for (d of s.top_difficulties; track d.label) {
+            <div class="diff">
+              <div class="diff-head">
+                <span>{{ d.label }}</span>
+                <strong>{{ d.weak_pct }}%</strong>
+              </div>
+              <div class="diff-bar"><div class="diff-fill" [style.width.%]="d.weak_pct"></div></div>
+            </div>
+          }
+        </div>
+
+        <h2>Détail par dimension</h2>
+        <table class="dims">
+          <tr><th>Dimension</th><th>Score moyen</th><th>% en difficulté</th></tr>
+          @for (d of s.dimensions; track d.code) {
+            <tr>
+              <td>{{ d.label }}</td>
+              <td>{{ d.avg_score }}/100</td>
+              <td [class.low]="d.weak_pct >= 50">{{ d.weak_pct }}%</td>
+            </tr>
+          }
+        </table>
+      }
+
+      <div class="admin-actions">
+        <a class="btn btn-ghost" routerLink="/">← Retour au site</a>
+        <button class="btn btn-primary" (click)="logout()">Déconnexion</button>
+      </div>
+    }
+
+  </div>
+</section>
