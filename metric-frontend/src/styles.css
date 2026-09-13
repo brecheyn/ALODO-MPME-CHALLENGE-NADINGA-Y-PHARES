@@ -130,3 +130,18 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .skeleton { animation: none; }
 }
+
+
+/* ═══════════ RESPONSIVE — Tablette (641px à 1024px) ═══════════ */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hero-title { font-size: 2.2rem; }
+  .global-row .global-card { flex: 1 1 45%; }
+}
+
+/* ═══════════ RESPONSIVE — Admin (mobile) ═══════════ */
+@media (max-width: 640px) {
+  .dims th, .dims td { font-size: 0.85rem; padding: 0.35rem; }
+  .qtext { flex: 1 1 100%; }
+  .qrow .btn { flex: 1 1 45%; }
+}
+
