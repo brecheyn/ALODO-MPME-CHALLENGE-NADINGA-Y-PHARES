@@ -2,24 +2,23 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
+     * Ordre important : niveaux PUIS dimensions PUIS questions PUIS recommandations
+     * (les clés étrangères exigent que les parents existent avant les enfants).
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            LevelSeeder::class,        // 1. les 4 niveaux de maturité
+            DimensionSeeder::class,    // 2. les 8 dimensions
+            QuestionSeeder::class,     // 3. questions + options (dépend de 1 et 2)
+            RecommendationSeeder::class, // 4. recommandations (dépend de 1 et 2)
         ]);
     }
 }
+
