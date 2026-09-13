@@ -1,6 +1,8 @@
 # ALODO Metric
 
-ALODO Metric est une application de diagnostic pour aider les MPME a evaluer leur structuration financiere. Le parcours public pose une serie de questions, calcule un score de maturite, puis retourne un resultat avec forces, priorites et recommandations.
+ALODO Metric évalue la solidité financière d'une MPME. L'utilisateur passe par un parcours en trois étapes : une intro, un questionnaire, puis un résultat avec un score, ses points forts, ses points faibles et une recommandation.
+
+Le questionnaire n'est pas figé dans le code : un back-office permet d'ajouter ou supprimer des questions à tout moment, sans redéploiement. C'est ce qui rend le diagnostic évolutif.
 
 ## URLs
 
@@ -8,6 +10,12 @@ ALODO Metric est une application de diagnostic pour aider les MPME a evaluer leu
 - Backend Render: https://alodo-metic.onrender.com
 - API publique: https://alodo-metic.onrender.com/api/beta
 - Back-office: https://alodo-metic.vercel.app/admin
+
+## Choix produit
+
+Le diagnostic se concentre sur la dimension **Finance** : trésorerie, marges, gestion des dépenses, dettes et créances. Quelques questions **Commercial** sont ajoutées en complément, parce que le niveau de vente influence directement la trésorerie.
+
+Les autres dimensions du programme ALODO MPME (Formalisation, Comptabilité, Digitalisation, Opérations, RH, Préparation au financement) ne sont pas traitées dans ce prototype, pour rester dans le délai de 3 jours et livrer quelque chose de cohérent plutôt que d'être incomplet partout.
 
 ## Structure
 
@@ -27,6 +35,14 @@ ALODO Metric est une application de diagnostic pour aider les MPME a evaluer leu
 - Base de donnees: MySQL Aiven
 - Frontend hosting: Vercel
 - Backend hosting: Render avec Docker PHP 8.4 Apache
+
+## Fonctionnalités
+
+- Parcours complet : intro → questionnaire → résultat
+- Calcul du score global et du score par dimension (Finance / Commercial)
+- Points forts, points faibles et recommandation
+- Back-office authentifié pour gérer les questions (ajout, suppression)
+- API publique (`/api/beta`) utilisable indépendamment du frontend
 
 ## Demarrage Local
 
@@ -109,14 +125,7 @@ Back-office:
 https://alodo-metic.vercel.app/admin
 ```
 
-Comptes seedes pour la beta:
-
-```text
-admin@alodo.mpme
-demo@alodo.mpme
-```
-
-Les mots de passe initiaux sont definis dans le seeder admin du backend. Avant une production reelle, changer ces mots de passe et eviter de garder des identifiants par defaut dans les seeders.
+Comptes de démonstration fournis sur demande (retirés du README pour la mise en beta).
 
 ## Branches
 
@@ -127,3 +136,19 @@ main
 ```
 
 Les anciennes branches `metric_backend` et `metric_frontend` ont servi au developpement separe. Le code deployable complet a ete fusionne dans `main`.
+
+## Limites
+
+- Seulement 2 dimensions sur les 8 sont couvertes (Finance et Commercial)
+- Pas de suivi dans le temps entre plusieurs passages du diagnostic
+- Le parcours est le même pour tout le monde, il ne s'adapte pas selon le profil de l'entreprise
+- Sécurité du back-office simplifiée pour la beta, à durcir avant une vraie mise en production
+- Pas de tests automatisés pour l'instant
+
+## Améliorations
+
+- Faire évoluer le parcours selon le profil déclaré de l'entreprise
+- Ajouter un suivi dans le temps entre plusieurs passages
+- Étendre progressivement à d'autres dimensions (Digitalisation en particulier)
+- Export du résultat en PDF
+- Renforcer la sécurité de l'admin (rotation des mots de passe, rôles différenciés)
