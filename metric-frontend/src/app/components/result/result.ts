@@ -16,13 +16,13 @@ export class Result implements OnInit {
   token    = signal('');
   result   = signal<DiagnosticResult | null>(null);
   error    = signal<string | null>(null);
-  copied   = signal(false);   // feedback "lien copié" du bouton Partager
+  copied   = signal(false);
 
-  // ── Animation de la jauge (lot B) ──
-  displayedScore = signal(0);                       // le chiffre qui compte 0 → score
-  ringGradient   = signal('conic-gradient(var(--alodo-orange) 0deg, #E9E9E6 0deg)'); // départ : 0°
+  // Animation de la jauge
+  displayedScore = signal(0);
+  ringGradient   = signal('conic-gradient(var(--alodo-orange) 0deg, #E9E9E6 0deg)');
 
-  // ── Règle "sans humilier" : score bas = encouragement + action en premier ──
+  // Score < 50 : présentation encourageante
   isLow = computed(() => (this.result()?.global_score ?? 0) < 50);
 
   // Barres en cascade : 1 = animée jusqu'à sa largeur, 0 = encore à zéro
@@ -85,8 +85,7 @@ export class Result implements OnInit {
     });
   }
 
-  // ── PARTAGE WHATSAPP ──
-  // Texte adapté à la règle "sans humilier" : encourageant même avec un score bas.
+  // Partage WhatsApp
   whatsappText(): string {
     const score = this.result()?.global_score ?? 0;
     const url = `${window.location.origin}/result/${this.token()}`;
@@ -105,9 +104,7 @@ export class Result implements OnInit {
     window.open(`https://wa.me/?text=${encodeURIComponent(this.whatsappText())}`, '_blank');
   }
 
-  // ── EXPORT PDF ──
-  // Impression du résultat : le navigateur génère le PDF (Ctrl+P → "Enregistrer en PDF").
-  // On ouvre une fenêtre d'impression contenant le résultat mis en page.
+  // Export PDF
   exportPdf(): void {
     const score = this.result()?.global_score ?? 0;
     const low = score < 50;   // règle "sans humilier" : mise en page encourageante

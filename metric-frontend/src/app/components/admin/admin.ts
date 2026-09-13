@@ -39,7 +39,7 @@ export class Admin implements OnInit {
 
   stats = signal<AdminStats | null>(null);
 
-  // ── Onglet "Questions" (phase 4) ──
+  // Onglet Questions
   tab = signal<'stats' | 'questions'>('stats');
   questions = signal<AdminQuestion[]>([]);
 

@@ -1,4 +1,4 @@
-// ── Le contrat de GET /results/{token} et POST /diagnostics/{token}/complete ──
+// Contrat de l'API résultat
 
 export interface ResultLevel {
   number: number;
