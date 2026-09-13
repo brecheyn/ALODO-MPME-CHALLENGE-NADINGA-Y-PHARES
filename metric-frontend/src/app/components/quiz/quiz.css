@@ -1,0 +1,81 @@
+.quiz {
+  padding: 3rem 0 8rem;          /* 8rem en bas = espace pour le bouton */
+}
+
+.quiz-inner {
+  max-width: 560px;              /* questionnaire étroit = lecture facile */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Progression ── */
+.progress { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.progress-label {
+  font-size: 0.9rem;
+  color: var(--alodo-gray);
+  font-weight: 600;
+}
+
+.progress-bar {
+  height: 6px;
+  background: #E5E5E5;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--alodo-orange);   /* la barre progresse en orange */
+  transition: width 0.3s ease;        /* animation fluide à chaque question */
+}
+
+/* ── Question ── */
+.question-text {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* ── Options : des cartes cliquables ── */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.option {
+  text-align: left;
+  padding: 1rem 1.25rem;
+  border: 2px solid #E5E5E5;
+  border-radius: 8px;
+  background: #FFFFFF;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.option:hover { border-color: var(--alodo-gray); }
+
+/* État SÉLECTIONNÉ : bordure orange + fond teinté = clair et accessible */
+.option-selected {
+  border-color: var(--alodo-orange) !important;
+  background: #FFF3E8;               /* orange très dilué */
+  font-weight: 600;
+}
+
+/* ── Le bouton Suivant : fixé en bas, toujours au même endroit ── */
+.btn-next {
+  position: fixed;                   /* fixe au viewport = mémoire musculaire */
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(480px, calc(100% - 3rem));  /* ne dépasse jamais l'écran mobile */
+}
+
+.btn-next:disabled {
+  background: #D4D4D4;               /* grisé : empêche l'erreur sans message */
+  cursor: not-allowed;
+}

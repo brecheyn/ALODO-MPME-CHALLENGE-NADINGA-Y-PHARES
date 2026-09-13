@@ -1,26 +1,15 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { ApiService } from './services/api.service';
-import { Question } from './models/questions.model';
+import { Component } from '@angular/core';
+import { RouterOutlet, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  // RouterOutlet : la "prise" où le routeur branche la page selon l'URL
+  // RouterLink   : pour les liens internes de la navbar (navigation SANS rechargement)
+  imports: [RouterOutlet, RouterLink],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App implements OnInit {
-  // inject() : Angular me donne une instance du service SANS constructor
-  private api = inject(ApiService);
-
-  // signal : une "case mémoire réactive" — quand elle change, la vue se met à jour TOUTE SEULE
-  questions = signal<Question[]>([]);
-  error     = signal<string | null>(null);
-
-  ngOnInit(): void {
-    // ngOnInit : cycle de vie — appelé quand le composant apparaît
-    this.api.getQuestions().subscribe({
-      next: (data) => this.questions.set(data),   // succès → on remplit le signal
-      error: (err) => this.error.set(err.message), // échec → on stocke l'erreur
-    });
-  }
+export class App {
+  // Le shell ne porte AUCUNE donnée : il structure (navbar / contenu / footer).
+  // Les données vivent dans les composants de page (Home, Quiz...).
 }

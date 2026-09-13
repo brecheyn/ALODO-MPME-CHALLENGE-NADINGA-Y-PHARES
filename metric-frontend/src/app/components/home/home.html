@@ -1,0 +1,52 @@
+<!-- ══════════════ HERO — Amorçage (premier mot = bénéfice) + UN SEUL CTA ══════════════ -->
+<section class="hero">
+  <div class="container hero-inner">
+
+    <h1 class="hero-title">
+      Structurez votre entreprise avant de chercher à la financer
+    </h1>
+
+    <p class="hero-subtitle">
+      Répondez à 8 questions simples et découvrez, en 4 minutes, les priorités
+      financières qui feront progresser votre activité.
+    </p>
+
+    <!-- LE CTA unique — Von Restorff : le seul élément orange saturé de la page.
+         routerLink = navigation INTERNE : Angular change de page sans recharger le navigateur -->
+    <button class="btn btn-primary btn-lg" routerLink="/quiz">Commencer le diagnostic</button>
+
+    <!-- Réassurance douce : friction réduite, pas d'urgence artificielle -->
+    <p class="hero-reassurance">Gratuit · sans inscription · résultat immédiat</p>
+
+  </div>
+</section>
+
+<!-- ══════════════ RÉASSURANCE — 3 chiffres clés + preuve sociale RÉELLE ══════════════ -->
+<section class="stats">
+  <div class="container">
+
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-value">4 min</span>
+        <span class="stat-label">Pour faire le point</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">8</span>
+        <span class="stat-label">Dimensions évaluées</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">100%</span>
+        <span class="stat-label">Gratuit et confidentiel</span>
+      </div>
+    </div>
+
+    <!-- Preuve sociale vivante : le compteur vient de TON backend -->
+    @if (diagnosticsCount() !== null) {
+      <p class="social-proof">
+        Déjà utilisé par <strong>{{ diagnosticsCount() }}</strong> MPME
+        pour structurer leur gestion
+      </p>
+    }
+
+  </div>
+</section>

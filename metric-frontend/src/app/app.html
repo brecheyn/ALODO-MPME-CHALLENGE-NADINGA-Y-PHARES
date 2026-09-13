@@ -1,19 +1,32 @@
+<!-- ══════════════ NAVBAR — 3 éléments max (loi de Hick appliquée à la navigation) ══════════════ -->
+<header class="navbar">
+  <div class="container navbar-inner">
+
+    <!-- Élément 1 : le logo → renvoie toujours à l'accueil -->
+    <a class="logo" routerLink="/">
+      <span class="logo-mark">A</span>
+      <span class="logo-text">ALODO<span class="logo-sep">_</span>Metric</span>
+    </a>
+
+    <!-- Éléments 2 et 3 : UN lien info + UN CTA. Rien d'autre. -->
+    <nav class="navbar-actions">
+      <a class="nav-link" href="#">Comment ça marche</a>
+      <a class="btn btn-primary" routerLink="/quiz">Commencer</a>
+    </nav>
+
+  </div>
+</header>
+
+<!-- ══════════════ CONTENU : le routeur branche ici la page correspondant à l'URL ══════════════ -->
 <main>
-  <h1>Diagnostic ALODO_Metric — Test de connexion API</h1>
-
-  @if (error()) {
-    <p class="error">⚠️ {{ error() }}</p>
-  }
-
-  @if (questions().length > 0) {
-    <p>{{ questions().length }} questions chargées depuis l'API ✅</p>
-    <ul>
-      @for (q of questions(); track q.id) {
-        <li>
-          <strong>Q{{ q.display_order }} :</strong> {{ q.text }}
-          ({{ q.options.length }} options)
-        </li>
-      }
-    </ul>
-  }
+  <router-outlet />
 </main>
+
+<!-- ══════════════ FOOTER — ancre de marque, PAS de navigation (loi de Hick préservée) ══════════════ -->
+<footer class="footer">
+  <div class="container">
+    <p class="footer-brand">ALODO Metric <span class="logo-sep">·</span> Diagnostic</p>
+    <p class="footer-tagline">Un outil de structuration pour les MPME d'Afrique de l'Ouest.</p>
+    <p class="footer-copyright">© 2026 Brecheyn — Tous droits réservés</p>
+  </div>
+</footer>

@@ -1,0 +1,79 @@
+<!-- ══════════════ LE RÉSULTAT — score, niveau, force/priorité, actions ══════════════ -->
+<section class="result">
+  <div class="container result-inner">
+
+    @if (error(); as err) {
+      <p class="result-error">⚠️ {{ err }}</p>
+      <a class="btn btn-primary" routerLink="/">Retour à l'accueil</a>
+    }
+
+    @if (result(); as r) {
+
+      <!-- Jauge circulaire : le score global mis en scène (orange = valeur/récompense) -->
+      <div class="score-ring" [style.background]="ringGradient()">
+        <div class="score-ring-inner">
+          <span class="score-number">{{ r.global_score }}</span>
+          <span class="score-max">/ 100</span>
+        </div>
+      </div>
+
+      <!-- Le niveau de maturité ("Niveau 3 · En structuration" sur la maquette) -->
+      <h1 class="result-level">Niveau {{ r.level.number }} · {{ r.level.label }}</h1>
+      <p class="result-encouragement">{{ r.level.encouragement }}</p>
+
+      <!-- Point fort (VERT) vs Priorité (ROUGE-BRIQUE) : jamais par le texte seul -->
+      <div class="verdict-row">
+        <div class="verdict verdict-strength">
+          <span class="verdict-label">Point fort · à préserver</span>
+          <span class="verdict-value">{{ r.strength.label }}</span>
+        </div>
+        <div class="verdict verdict-priority">
+          <span class="verdict-label">Priorité · à structurer</span>
+          <span class="verdict-value">{{ r.priority.label }}</span>
+        </div>
+      </div>
+
+      <!-- Scores par dimension -->
+      <div class="dimensions">
+        <h2 class="section-title">Vos dimensions</h2>
+        @for (dim of dimensionEntries(); track dim.code) {
+          <div class="dimension">
+            <div class="dimension-head">
+              <span class="dimension-label">{{ dim.label }}</span>
+              <span class="dimension-score"
+                    [class.score-good]="dim.score >= 50"
+                    [class.score-low]="dim.score < 50">{{ dim.score }}%</span>
+            </div>
+            <div class="dimension-bar">
+              <div class="dimension-fill" [style.width.%]="dim.score"
+                   [class.fill-good]="dim.score >= 50"
+                   [class.fill-low]="dim.score < 50"></div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Recommandation actionnable pour la dimension prioritaire -->
+      @if (r.recommendations.length > 0) {
+        <div class="recommendations">
+          <h2 class="section-title">Votre première action</h2>
+          @for (rec of r.recommendations; track rec.title) {
+            <div class="recommendation">
+              <span class="rec-title">{{ rec.title }}</span>
+              <span class="rec-action">{{ rec.action_text }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- CTA de sortie : partager + recommencer -->
+      <div class="result-actions">
+        <button type="button" class="btn btn-primary btn-lg" (click)="share()">
+          {{ copied() ? 'Lien copié ✅' : 'Partager mon résultat' }}
+        </button>
+        <a class="btn btn-ghost" routerLink="/quiz">Recommencer</a>
+      </div>
+
+    }
+  </div>
+</section>

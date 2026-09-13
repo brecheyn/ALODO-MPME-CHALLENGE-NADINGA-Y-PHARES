@@ -1,0 +1,128 @@
+.result {
+  padding: 3rem 0 5rem;
+}
+
+.result-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+/* ── La jauge circulaire ── */
+.score-ring {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.score-ring-inner {
+  width: 124px;
+  height: 124px;
+  border-radius: 50%;
+  background: var(--alodo-white);      /* "trou" de la jauge */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.score-number { font-size: 2.6rem; font-weight: 800; line-height: 1; }
+.score-max   { color: var(--alodo-gray); font-size: 0.85rem; }
+
+.result-level { font-size: 1.5rem; font-weight: 800; }
+
+.result-encouragement {
+  color: var(--alodo-gray);
+  max-width: 480px;
+}
+
+/* ── Point fort / Priorité : vert vs rouge-brique ── */
+.verdict-row {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.verdict {
+  flex: 1 1 240px;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.verdict-strength { border: 2px solid var(--alodo-green); }
+.verdict-priority { border: 2px solid var(--alodo-brick); }
+
+.verdict-label  { font-size: 0.8rem; font-weight: 600; }
+.verdict-strength .verdict-label { color: var(--alodo-green); }
+.verdict-priority .verdict-label { color: var(--alodo-brick); }
+
+.verdict-value { font-weight: 700; }
+
+/* ── Scores par dimension ── */
+.dimensions, .recommendations {
+  width: 100%;
+  text-align: left;
+}
+
+.section-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.75rem; }
+
+.dimension { margin-bottom: 0.9rem; }
+
+.dimension-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+
+.dimension-score { font-weight: 700; }
+.score-good { color: var(--alodo-green); }
+.score-low  { color: var(--alodo-brick); }
+
+.dimension-bar {
+  height: 8px;
+  background: #E9E9E6;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dimension-fill { height: 100%; border-radius: 4px; }
+.fill-good { background: var(--alodo-green); }
+.fill-low  { background: var(--alodo-brick); }
+
+/* ── Recommandation ── */
+.recommendation {
+  border-left: 4px solid var(--alodo-orange);
+  background: #FFF7EF;
+  padding: 0.9rem 1.1rem;
+  border-radius: 0 8px 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rec-title  { font-weight: 700; }
+.rec-action { color: var(--alodo-gray); font-size: 0.95rem; }
+
+/* ── CTA de sortie ── */
+.result-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--alodo-black);
+  border: 2px solid var(--alodo-black);
+}

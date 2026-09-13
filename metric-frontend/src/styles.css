@@ -1,1 +1,68 @@
 /* You can add global styles to this file, and also import other style files */
+/* ═══════════════════════════════════════════════
+   ALODO MPME · Diagnostic — Palette globale
+   Noir & Blanc structurent, Orange fait agir.
+   ═══════════════════════════════════════════════ */
+
+:root {
+  /* Les variables CSS : définies UNE fois, utilisées partout */
+  --alodo-black:   #111111;   /* texte principal, navbar */
+  --alodo-white:   #FAFAF8;   /* fond (blanc cassé chaud) */
+  --alodo-orange:  #FF6B00;   /* CTA, actions — unique couleur saturée */
+  --alodo-orange-dark: #E05E00; /* état hover du CTA (légèrement plus sombre) */
+  --alodo-gray:    #6B7280;   /* textes secondaires */
+  --alodo-green:   #16A34A;   /* sémantique : point fort */
+  --alodo-brick:   #B42318;   /* sémantique : priorité / faiblesse */
+}
+
+/* Reset minimal : neutraliser les styles par défaut du navigateur */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;   /* padding compté DANS la largeur (prévisible) */
+}
+
+body {
+  background-color: var(--alodo-white);
+  color: var(--alodo-black);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+/* ═══════════ STYLES PARTAGÉS (global = utilisables par TOUS les composants) ═══════════
+   Règle : une classe utilisée par PLUSIEURS composants vit ici, pas dans app.css.
+   (Angular "scope" les styles d'un composant : .container défini dans app.css
+   ne s'appliquerait PAS au contenu de Home ou Quiz.) ═══════════ */
+
+/* La règle de lisibilité n°1 du web */
+.container {
+  max-width: 1100px;      /* au-delà, l'œil se perd sur les grands écrans */
+  margin: 0 auto;         /* centrage horizontal */
+  padding: 0 1.5rem;      /* respiration sur les bords (mobile) */
+}
+
+/* LE BOUTON — star de la page (Von Restorff) */
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--alodo-orange);      /* le SEUL élément saturé visible */
+  color: #FFFFFF;
+  transition: background 0.15s ease;    /* transition douce au survol */
+}
+
+.btn-primary:hover {
+  background: var(--alodo-orange-dark); /* retour visuel : "tu peux cliquer" */
+}
+
+.btn-lg {
+  padding: 1rem 2.5rem;                 /* grand = Loi de Fitts (zone de pouce) */
+  font-size: 1.1rem;
+}

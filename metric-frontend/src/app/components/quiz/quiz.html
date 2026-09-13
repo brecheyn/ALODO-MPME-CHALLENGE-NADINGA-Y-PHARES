@@ -1,0 +1,46 @@
+<!-- ══════════════ LE QUESTIONNAIRE — une question à la fois ══════════════ -->
+<section class="quiz">
+  <div class="container quiz-inner">
+
+    @if (error(); as err) {
+      <p class="quiz-error">⚠️ {{ err }}</p>
+    }
+
+    @if (currentQuestion(); as q) {
+
+      <!-- Progression TOUJOURS visible : l'utilisateur sait où il en est -->
+      <div class="progress">
+        <span class="progress-label">Question {{ currentIndex() + 1 }}/{{ questions().length }}</span>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="((currentIndex() + 1) / questions().length) * 100"></div>
+        </div>
+      </div>
+
+      <!-- UNE question à la fois : pas de scroll, pas de surcharge cognitive -->
+      <h2 class="question-text">{{ q.text }}</h2>
+
+      <!-- Options cliquables : l'état sélectionné est visuellement évident -->
+      <div class="options">
+        @for (opt of q.options; track opt.id) {
+          <button
+            type="button"
+            class="option"
+            [class.option-selected]="selectedOptionId() === opt.id"
+            (click)="select(opt.id)">
+            {{ opt.text }}
+          </button>
+        }
+      </div>
+
+      <!-- Bouton UNIQUE, même place à chaque question, désactivé sans réponse -->
+      <button
+        type="button"
+        class="btn btn-primary btn-lg btn-next"
+        [disabled]="selectedOptionId() === null"
+        (click)="next()">
+        {{ isLast() ? 'Voir mon résultat' : 'Suivant' }}
+      </button>
+
+    }
+  </div>
+</section>

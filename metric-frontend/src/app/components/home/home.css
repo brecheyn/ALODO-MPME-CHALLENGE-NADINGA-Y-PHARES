@@ -1,0 +1,73 @@
+/* ═══════════ HERO ═══════════ */
+.hero {
+  padding: 5rem 0 4rem;
+  text-align: center;                   /* centré = focus total sur UN message */
+}
+
+.hero-inner {
+  display: flex;
+  flex-direction: column;               /* les éléments s'empilent verticalement */
+  align-items: center;                  /* centrés horizontalement */
+  gap: 1.25rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: clamp(1.8rem, 4vw, 3rem);  /* fluide : 1.8rem sur mobile → 3rem sur grand écran */
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.hero-subtitle {
+  color: var(--alodo-gray);
+  font-size: 1.1rem;
+  max-width: 560px;                     /* ligne courte = lisible */
+}
+
+.hero-reassurance {
+  color: var(--alodo-gray);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+/* ═══════════ STATS / RÉASSURANCE ═══════════ */
+.stats {
+  padding: 1rem 0 3rem;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;                       /* espace généreux entre les 3 chiffres */
+  flex-wrap: wrap;                 /* sur mobile, les stats passent à la ligne au lieu de se tasser */
+  text-align: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;          /* chiffre au-dessus, libellé en dessous */
+  gap: 0.25rem;
+}
+
+/* Le chiffre : gros, noir, gras — PAS orange (règle de rareté de l'orange !) */
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.stat-label {
+  color: var(--alodo-gray);
+  font-size: 0.9rem;
+}
+
+/* La preuve sociale : une ligne discrète, centrée, SOUS les chiffres */
+.social-proof {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: var(--alodo-gray);
+  font-size: 0.95rem;
+}
+
+.social-proof strong {
+  color: var(--alodo-black);       /* seul le chiffre ressort, en noir gras */
+}
